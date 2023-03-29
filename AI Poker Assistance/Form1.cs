@@ -9,8 +9,8 @@ using Newtonsoft.Json;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.IO;
-using Svg;
 using SkiaSharp;
+using System.Net;
 
 namespace AI_Poker_Assistance
 {
@@ -20,51 +20,76 @@ namespace AI_Poker_Assistance
         {
             InitializeComponent();
         }
+        List<PlayerModel> players = new List<PlayerModel>();
 
 
-
-
-
-        private async Task<string> SendAPIRequest(string prompt, string apiKey, string context)
+        public enum PokerPosition
         {
-            // Create API request object
-            var root = new Root
-            {
-                model = "text-davinci-002",
-                messages = new List<Message>
-                 {
-                    new Message
-                    {
-                        role = "assistant",
-                        text = prompt
-                    }
-                  },
-                context = context
-            };
-
-            // Serialize request object to JSON
-            var json = JsonConvert.SerializeObject(root);
-
-            // Send POST request to API
-            using (var httpClient = new HttpClient())
-            {
-                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", apiKey);
-                var content = new StringContent(json, Encoding.UTF8, "application/json");
-                var response = await httpClient.PostAsync("https://api.openai.com/v1/engines/davinci-codex/completions", content);
-
-                // Get response body
-                var responseBody = await response.Content.ReadAsStringAsync();
-
-                // Deserialize response object
-                var responseObject = JsonConvert.DeserializeObject<Root>(responseBody);
-
-                // Save context for next API request
-                context = responseObject.context;
-
-                // Return response text
-                return responseObject.messages.Last().text;
-            }
+            UTG1 = 0,
+            UTG2 = 1,
+            MP1 = 2,
+            MP2 = 3,
+            MP3 = 4,
+            CO = 5,
+            BTN = 6,
+            SB = 7,
+            BB = 8
         }
+
+        public void CreatePlayersList()
+        {
+
+            string[] names = { "John", "Sarah", "Mike", "Emily", "David", "Emma", "Alex", "Olivia", "Daniel" };
+
+            Random random = new Random();
+
+            for (int i = 0; i < 9; i++)
+            {
+                PlayerModel player = new PlayerModel();
+
+                player.Name = names[i];
+
+                player.Position = Enum.GetValues(typeof(PokerPosition)).GetValue(i).ToString();
+             
+                string[] notes = { "Tight player", "Aggressive", "Calls too much", "Bluffs often", "Unknown player" };
+                player.Notes = notes[random.Next(notes.Length)];
+
+                player.Stack = random.Next(10, 26);
+
+                players.Add(player);
+            }
+
+
+            var a = players;
+            string filePath = @"D:\Users\vgol01\Documents\Visual Studio 2022\Project\AI Poker Assistance\history.txt";
+
+            if (File.Exists(filePath))
+            {
+                // Do something
+                using (StreamWriter writer = new StreamWriter(filePath))
+                {
+                    writer.Write("");
+                    writer.Write("Position" + '\t' + "Notes about player" + '\t' + "Stack (in Big blinds)");
+                
+                    foreach (var item in players)
+                    {
+                        writer.WriteLine();
+                        writer.Write(item.Position + '\t');
+                        writer.Write(item.Notes + '\t');
+                        writer.Write(item.Stack);
+                      //  Console.WriteLine("{0,-24} | {1,-11}", person.Name, person.Age);
+                    
+
+                    writer.WriteLine();
+
+                    }
+                }
+            }
+         
+        }
+
+
+
 
 
         private async void button1_Click(object sender, EventArgs e)
@@ -100,133 +125,153 @@ namespace AI_Poker_Assistance
 
 
         }
+        List<Card> TableCard = new List<Card>(5) { null, null, null, null, null };
         private const int NUM_COLUMNS = 13;
         private const int NUM_ROWS = 4;
         private const int IMAGE_SIZE = 50; // размер изображения
         private const int GAP_SIZE = 10; // промежуток между изображениями
-        public void PanelClick(string stageOfGame)
+        public void PanelClick(string stageOfGame, object PanelSender)
         {
-            switch (stageOfGame)
+
+
+
+            Form galleryForm = new Form();
+            galleryForm.Size = new Size(750, 350);
+            galleryForm.Text = "Image Gallery";
+            galleryForm.StartPosition = FormStartPosition.CenterScreen;
+
+            // Создаем панель для размещения изображений
+            Panel galleryPanel = new Panel();
+            galleryPanel.AutoScroll = true;
+            galleryPanel.Dock = DockStyle.Fill;
+            galleryForm.Controls.Add(galleryPanel);
+
+            // Вычисляем размеры изображений
+            int imageWidth = (int)Math.Floor((double)(galleryPanel.Width - (NUM_COLUMNS - 1) * GAP_SIZE) / NUM_COLUMNS);
+            int imageHeight = (int)Math.Floor((double)(galleryPanel.Height - (NUM_ROWS - 1) * GAP_SIZE) / NUM_ROWS);
+
+            // Заполняем панель изображениями
+            int imageIndex = 0;
+            for (int row = 0; row < NUM_ROWS; row++)
             {
-                case "flop":
+                for (int col = 0; col < NUM_COLUMNS; col++)
+                {
+                    if (imageIndex > 52) // Если заполнены все ячейки - выходим из цикла
+                        break;
+
+
+
+
+
+                    Card card = MainDeck.cards[imageIndex];
+                    PictureBox pictureBox = new PictureBox();
+
+
+                    pictureBox.Size = new Size(imageWidth, imageHeight);
+                    pictureBox.Location = new Point(col * (imageWidth + GAP_SIZE), row * (imageHeight + GAP_SIZE));
+                    pictureBox.SizeMode = PictureBoxSizeMode.StretchImage;
+                    pictureBox.ImageLocation = $"{MainDeck.cards[imageIndex].images.png}"; // замените на реальный URL-адрес изображения
+
+                    galleryPanel.Controls.Add(pictureBox);
+
+                    switch (stageOfGame)
                     {
-                        //    Form galleryForm = new Form()
-                        //    {
-                        //        Size = new Size(850, 600)
-                        //    };
-                        //    galleryForm.Text = "Image Gallery";
-                        //    galleryForm.StartPosition = FormStartPosition.CenterScreen;
-
-                        //    // Создаем панель для размещения изображений
-                        //    Panel galleryPanel = new Panel();
-                        //    galleryPanel.AutoScroll = true;
-                        //    galleryPanel.Dock = DockStyle.Fill;
-                        //    galleryForm.Controls.Add(galleryPanel);
-
-                        //    // Заполняем панель изображениями
-                        //    int imageIndex = 0;
-                        //    for (int row = 0; row < NUM_ROWS; row++)
-                        //    {
-                        //        for (int col = 0; col < NUM_COLUMNS; col++)
-                        //        {
-                        //            if (imageIndex > 52) // Если заполнены все ячейки - выходим из цикла
-                        //                break;
-
-                        //            PictureBox pictureBox = new PictureBox();
-                        //            pictureBox.Size = new Size(IMAGE_SIZE, IMAGE_SIZE);
-                        //            pictureBox.Location = new Point(col * IMAGE_SIZE, row * IMAGE_SIZE);
-                        //            pictureBox.SizeMode = PictureBoxSizeMode.StretchImage;
-                        //            galleryPanel.Controls.Add(pictureBox);
-
-                        //            imageIndex++;
-                        //        }
-                        //    }
-
-                        //    // Открываем галерею
-                        //    galleryForm.ShowDialog();
-                        //}
-
-                        Form galleryForm = new Form();
-                        galleryForm.Size = new Size(500, 300);
-                        galleryForm.Text = "Image Gallery";
-                        galleryForm.StartPosition = FormStartPosition.CenterScreen;
-
-                        // Создаем панель для размещения изображений
-                        Panel galleryPanel = new Panel();
-                        galleryPanel.AutoScroll = true;
-                        galleryPanel.Dock = DockStyle.Fill;
-                        galleryForm.Controls.Add(galleryPanel);
-
-                        // Вычисляем размеры изображений
-                        int imageWidth = (int)Math.Floor((double)(galleryPanel.Width - (NUM_COLUMNS - 1) * GAP_SIZE) / NUM_COLUMNS);
-                        int imageHeight = (int)Math.Floor((double)(galleryPanel.Height - (NUM_ROWS - 1) * GAP_SIZE) / NUM_ROWS);
-
-                        // Заполняем панель изображениями
-                        int imageIndex = 0;
-                        for (int row = 0; row < NUM_ROWS; row++)
-                        {
-                            for (int col = 0; col < NUM_COLUMNS; col++)
+                        case "flop":
                             {
-                                if (imageIndex > 52) // Если заполнены все ячейки - выходим из цикла
-                                    break;
+                                pictureBox.Click += (sender, e) =>
+                                {
+                                    if (pictureBox.ImageLocation == "https://images.unsplash.com/photo-1533035353720-f1c6a75cd8ab?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8Z3JheXxlbnwwfHwwfHw%3D&w=1000&q=80")
+                                    {
+                                        MessageBox.Show("ок?","на ебало себе нажми");
+                                        return;
+                                    }
+                                    Panel panelsender = PanelSender as Panel;
+                                    
+
+                                    var controls = panelsender.Controls;
+                                    int countOfBoard = 0;
+                                    foreach (var a in controls)
+                                    { 
+                                        if (a is Label)
+                                        { 
+                                            Label label = a as Label;
+                                            countOfBoard = Convert.ToInt32(label.Text.Substring(5, 1));
 
 
-                                var svgDocument = SvgDocument.Open("image.svg");
+                                        }
 
-                                // Создание битмапа для отображения растровой версии SVG-изображения
-                                var bitmap = new SKBitmap(100, 100);
+                                    }
+                                    using (var webClient = new WebClient())
+                                    {
+                                        var url = $"{card.images.png}";
+                                        var imageStream = new MemoryStream(webClient.DownloadData(url));
+                                        var image = Image.FromStream(imageStream);
+                                        foreach (var maindeckcard in MainDeck.cards)
+                                        {
+                                            if (maindeckcard.code == card.code)
+                                            {
+                                                maindeckcard.images.png = "https://images.unsplash.com/photo-1533035353720-f1c6a75cd8ab?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8Z3JheXxlbnwwfHwwfHw%3D&w=1000&q=80"; 
+                                                //изменили картинку на неправильную
+                                            }
 
-                                // Создание рендерера для SVG-изображения
-                             //   var renderer = new SKSvg();
+                                        }
+                                        panelsender.Name = card.code;
+                                        panelsender.BackgroundImage = image;
+                                        panelsender.BackgroundImageLayout = ImageLayout.Stretch;
+                                        TableCard[countOfBoard] = card;
+                                        galleryForm.Close();
 
-                                // Рендеринг SVG-изображения на битмапе
-                               // renderer.Render(svgDocument, bitmap);
+                                    }
+                                };
 
 
-
-
-
-
-
-                                PictureBox pictureBox = new PictureBox();
-                                
-                                pictureBox.Size = new Size(imageWidth, imageHeight);
-                                pictureBox.Location = new Point(col * (imageWidth + GAP_SIZE), row * (imageHeight + GAP_SIZE));
-                                pictureBox.SizeMode = PictureBoxSizeMode.StretchImage;
-                                pictureBox.ImageLocation = $"{MainDeck.cards[imageIndex].images.svg}"; // замените на реальный URL-адрес изображения
-                                galleryPanel.Controls.Add(pictureBox);
-
-                                imageIndex++;
                             }
-                        }
-
-                        // Открываем галерею
-                        galleryForm.ShowDialog();
-
-
+                            break;
 
                     }
 
-                    break;
-            
+
+
+                    imageIndex++;
+                }
             }
-        
+
+            // Открываем галерею
+            galleryForm.ShowDialog();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         }
 
 
 
 
-        private void AddPanels()
+        private void AddPanels(int countPlayers)
         {
             int PlayerCount = 0;
             int panelWidth = 60;
             int panelHeight = 60; // высота
-            int centerX = (this.ClientSize.Width / 2)-45;
-            int centerY = this.ClientSize.Height / 2;
+            int centerX = (this.ClientSize.Width / 2) - 80; // ширина
+            int centerY = this.ClientSize.Height / 2; // высота
             double ovalWidth = 300;
             double ovalHeight = 200;
 
-            for (int i = 0; i < 9; i++)
+            for (int i = 0; i < countPlayers; i++)
             {
                 PlayerCount++;
                 Panel panel = new Panel();
@@ -245,7 +290,12 @@ namespace AI_Poker_Assistance
 
                 Label Playerlabel = new Label();
                 Playerlabel.Text = "P" + PlayerCount;
+                Playerlabel.Name = Playerlabel.Text;
+               // panel.Name = Playerlabel.Text;
                 Playerlabel.AutoSize = false;
+
+                ButtonComboBox.Items.Add(Playerlabel.Text);
+                HeroComboBox.Items.Add(Playerlabel.Text);
                 //  label.Location = new Point(panelWidth / 2 - label.Width / 2, panelHeight / 2 - label.Height / 2 - 20);
                 panel.Controls.Add(Playerlabel);
 
@@ -260,6 +310,8 @@ namespace AI_Poker_Assistance
                     Panel parentPanel = (Panel)((Button)sender).Parent;
                     this.Controls.Remove(parentPanel);
                     LogWrite("Player " + Playerlabel.Text[1] + " FOLD");
+                    ButtonComboBox.Items.Remove(Playerlabel.Text);
+                    HeroComboBox.Items.Remove(Playerlabel.Text);
 
                 };
                 panel.Controls.Add(button1);
@@ -378,7 +430,7 @@ namespace AI_Poker_Assistance
             }
 
         }
-        public Deck MainDeck; 
+        public Deck MainDeck;
         public async void MakeApiDeck()
         {
             //генератор колоды
@@ -386,7 +438,7 @@ namespace AI_Poker_Assistance
             HttpResponseMessage response1 = await client1.GetAsync("https://deckofcardsapi.com/api/deck/new/");
             string responseBody1 = await response1.Content.ReadAsStringAsync();
             Deck iddeck = JsonConvert.DeserializeObject<Deck>(responseBody1);
-            
+
 
 
             // получение карт
@@ -402,8 +454,8 @@ namespace AI_Poker_Assistance
         private void Form1_Load(object sender, EventArgs e)
         {
             string filePath = @"D:\Users\vgol01\Documents\Visual Studio 2022\Project\AI Poker Assistance\TextFile.txt";
-
-
+            CreatePlayersList();
+            this.Controls.Add(ButtonPictureBox);
 
             // Открываем файл на перезапись
             using (StreamWriter sw = new StreamWriter(filePath, false))
@@ -411,12 +463,12 @@ namespace AI_Poker_Assistance
                 // Перезаписываем содержимое файла пустой строкой
                 sw.Write("");
             }
-            AddPanels();
+            AddPanels(9);
             MakeApiDeck();
             LogWrite("---Preflop---");
         }
 
-      
+
 
         private void panel6_Paint(object sender, PaintEventArgs e)
         {
@@ -438,10 +490,134 @@ namespace AI_Poker_Assistance
 
         }
 
-        private void panel2_Click(object sender, EventArgs e)
+        private void panel2_Click(object sender, EventArgs e) // 0 в массива - 1 на столе
         {
+            // Тут при повторному нажатии на возвращаем
+            Panel panel = sender as Panel;
+
+            if (panel.BackgroundImage != null)
+            {
+
+                foreach (var maindeckcard in MainDeck.cards)
+                {
+                    if (maindeckcard.code == panel.Name)
+                    {
+                        maindeckcard.images.png = maindeckcard.image;
+                        //изменили картинку в выборе карты
+                    }
+
+                }
+            }
+
             if (MainDeck != null)
-                PanelClick("flop");
+                PanelClick("flop", sender);
+        }
+
+        private void panel2_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+      
+
+
+        private void panel3_Click(object sender, EventArgs e) // 1
+        {
+            Panel panel = sender as Panel;
+           
+            if (panel.BackgroundImage != null)
+            {
+                
+                foreach (var maindeckcard in MainDeck.cards)
+                {
+                    if (maindeckcard.code == panel.Name)
+                    {
+                        maindeckcard.images.png = maindeckcard.image;
+                        //изменили картинку в выборе карты
+                    }
+
+                }
+            }
+            if (MainDeck != null)
+                PanelClick("flop", sender);
+        }
+
+        private void panel4_Click(object sender, EventArgs e) // 2
+        {
+            Panel panel = sender as Panel;
+
+            if (panel.BackgroundImage != null)
+            {
+
+                foreach (var maindeckcard in MainDeck.cards)
+                {
+                    if (maindeckcard.code == panel.Name)
+                    {
+                        maindeckcard.images.png = maindeckcard.image;
+                        //изменили картинку в выборе карты
+                    }
+
+                }
+            }
+            if (MainDeck != null)
+                PanelClick("flop", sender);
+        }
+
+    
+
+        private void panel3_DoubleClick(object sender, EventArgs e) // 3
+        {
+            var a = TableCard;
+        }
+        PictureBox ButtonPictureBox = new PictureBox()
+        {
+            SizeMode = PictureBoxSizeMode.StretchImage,
+            Visible = true,
+            ImageLocation = "https://cdn.imgbin.com/13/23/9/imgbin-texas-hold-em-poker-dealer-button-poker-table-cut-button-8zJLddzeXZ36QirEjPtrFqMUJ.jpg",
+            Size = new Size(45, 45),
+            Location = new Point(50, 100)
+        };
+        private void ButtonComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            string selectedItem = ButtonComboBox.SelectedItem.ToString();
+            // тут через ребёнка ищем родителя label->panel
+            Control[] tbxs = this.Controls.Find(selectedItem, true);
+            foreach (var label in tbxs)
+            {
+                Control control = label.Parent;
+                Panel panel = control as Panel;
+                if (tbxs != null && tbxs.Length > 0)
+                {
+                    textBox1.Text = "founded";
+                    Point location = panel.Location;
+                    if (location.Y > 200)
+                    { // это что ниже
+                        ButtonPictureBox.Location = new Point(panel.Location.X + 15, panel.Location.Y - ButtonPictureBox.Height - 2);
+                        //Control[] panel = this.Controls.Find(selectedItem, true);
+
+                    }
+                    else
+                    { // это что выше
+                        ButtonPictureBox.Location = new Point(panel.Location.X + 10, panel.Location.Y + ButtonPictureBox.Height + 20);
+
+                    }
+                }
+
+            }
+
+            // IList<Xamarin.Forms.View> _list = this.Controls.; // Идем менять элементы формы
+
+        }
+
+        private void CountPlayer_TextChanged(object sender, EventArgs e)
+        {
+            int count = Convert.ToInt32(CountPlayer.Text);
+            AddPanels(count);
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            LogWrite("---Flop---");
         }
     }
 }

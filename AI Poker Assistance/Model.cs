@@ -8,48 +8,21 @@ namespace AI_Poker_Assistance
 {
 
     // Модель предложенная AI
-    public class ApiData
-    {
-        public List<Choice> Choices { get; set; }
-    }
 
-    public class Choice
-    {
-        public string Text { get; set; }
-        public string Index { get; set; }
-        public float Logprobs { get; set; }
-        public string FinishReason { get; set; }
-        public string Context { get; set; }
-        
-    }
-    
-    // Модель из документации
-    public class MessagesItem
-    {
 
-        /// <summary>
-        /// 
-        /// </summary>
-        public string role { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public string content { get; set; }
-    }
 
-   
 
-    public class Root
+
+
+    public class PlayerModel
     {
-        public string model { get; set; }
-        public List<Message> messages { get; set; }
-        public string context { get; set; }
-    }
+        public string Name { get; set; }
+        public string Position { get; set; }
 
-    public class Message
-    {
-        public string role { get; set; }
-        public string text { get; set; }
+        public string Notes { get; set; }
+
+        public double Stack { get; set; }
+
     }
 
     public class Card
