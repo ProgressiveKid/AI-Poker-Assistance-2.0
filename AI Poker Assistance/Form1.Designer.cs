@@ -40,9 +40,9 @@
             this.panel3 = new System.Windows.Forms.Panel();
             this.panel4 = new System.Windows.Forms.Panel();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.ButtonComboBox = new System.Windows.Forms.ComboBox();
-            this.HeroComboBox = new System.Windows.Forms.ComboBox();
             this.CountPlayer = new System.Windows.Forms.TextBox();
+            this.HeroComboBox = new System.Windows.Forms.ComboBox();
+            this.ButtonComboBox = new System.Windows.Forms.ComboBox();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -164,25 +164,6 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Настройки";
             // 
-            // ButtonComboBox
-            // 
-            this.ButtonComboBox.FormattingEnabled = true;
-            this.ButtonComboBox.Location = new System.Drawing.Point(6, 19);
-            this.ButtonComboBox.Name = "ButtonComboBox";
-            this.ButtonComboBox.Size = new System.Drawing.Size(121, 21);
-            this.ButtonComboBox.TabIndex = 0;
-            this.ButtonComboBox.Text = "Button";
-            this.ButtonComboBox.SelectedIndexChanged += new System.EventHandler(this.ButtonComboBox_SelectedIndexChanged);
-            // 
-            // HeroComboBox
-            // 
-            this.HeroComboBox.FormattingEnabled = true;
-            this.HeroComboBox.Location = new System.Drawing.Point(6, 58);
-            this.HeroComboBox.Name = "HeroComboBox";
-            this.HeroComboBox.Size = new System.Drawing.Size(121, 21);
-            this.HeroComboBox.TabIndex = 3;
-            this.HeroComboBox.Text = "Hero";
-            // 
             // CountPlayer
             // 
             this.CountPlayer.Enabled = false;
@@ -192,6 +173,26 @@
             this.CountPlayer.TabIndex = 4;
             this.CountPlayer.Text = "CountPlayer";
             this.CountPlayer.TextChanged += new System.EventHandler(this.CountPlayer_TextChanged);
+            // 
+            // HeroComboBox
+            // 
+            this.HeroComboBox.FormattingEnabled = true;
+            this.HeroComboBox.Location = new System.Drawing.Point(6, 58);
+            this.HeroComboBox.Name = "HeroComboBox";
+            this.HeroComboBox.Size = new System.Drawing.Size(121, 21);
+            this.HeroComboBox.TabIndex = 3;
+            this.HeroComboBox.Text = "Hero";
+            this.HeroComboBox.SelectedIndexChanged += new System.EventHandler(this.HeroComboBox_SelectedIndexChanged);
+            // 
+            // ButtonComboBox
+            // 
+            this.ButtonComboBox.FormattingEnabled = true;
+            this.ButtonComboBox.Location = new System.Drawing.Point(6, 19);
+            this.ButtonComboBox.Name = "ButtonComboBox";
+            this.ButtonComboBox.Size = new System.Drawing.Size(121, 21);
+            this.ButtonComboBox.TabIndex = 0;
+            this.ButtonComboBox.Text = "Button";
+            this.ButtonComboBox.SelectedIndexChanged += new System.EventHandler(this.ButtonComboBox_SelectedIndexChanged);
             // 
             // Form1
             // 

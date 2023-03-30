@@ -11,6 +11,11 @@ using System.Net.Http.Headers;
 using System.IO;
 using SkiaSharp;
 using System.Net;
+using OpenAI;
+using OpenAI.GPT3.ObjectModels.RequestModels;
+using System.Web.Routing;
+using OpenAI.Api.V1;
+
 
 namespace AI_Poker_Assistance
 {
@@ -78,9 +83,7 @@ namespace AI_Poker_Assistance
                         writer.Write(item.Notes + '\t');
                         writer.Write(item.Stack);
                       //  Console.WriteLine("{0,-24} | {1,-11}", person.Name, person.Age);
-                    
-
-                    writer.WriteLine();
+                        writer.WriteLine();
 
                     }
                 }
@@ -91,39 +94,84 @@ namespace AI_Poker_Assistance
 
 
 
-
+        string conversationId = null;
         private async void button1_Click(object sender, EventArgs e)
         {
 
-            HttpClient Http = new HttpClient();
             var apiKey = "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";
-            Http.DefaultRequestHeaders.Add("Authorization", $"Bearer {apiKey}");
 
-            // JSON content for the API call
+            var api = new OpenAI_API.OpenAIAPI(apiKey);
+            var result = await api.Completions.GetCompletion("One Two Three One Two");
+            label1.Text = result;
+            Console.WriteLine(result);
 
 
-            var jsonContent = new
+
+            while (true)
             {
-                prompt = textBox1.Text,
-                //context = savedcontext,
-                //AccessibleRole = "assistant",
-                model = "text-davinci-003",
-                max_tokens = 1000
-            };
+                // Запрашиваем текст для отправки на сервер OpenAI
+                Console.Write("> ");
+                string text = Console.ReadLine();
+
+                // Создаем запрос к API OpenAI с использованием контекста разговора
+                var request = new RequestContext
+                {
+                    Engine = "davinci",
+                    Prompt = text,
+                    MaxTokens = 100,
+                    Stop = "\n",
+                    Context = conversationId != null ? new RequestContext(conversationId, null, null) : null
+                };
+
+                // Отправляем запрос к API OpenAI
+                var result = api.Completions.Create(request);
+
+                // Получаем результат запроса
+                var responseText = result.Choices[0].Text;
+
+                // Сохраняем ID разговора из ответа API OpenAI
+                conversationId = result.GetContext()?.ConversationId;
+
+                // Выводим результат на экран
+                Console.WriteLine(responseText);
 
 
-            // Make the API call
-            var responseContent = await Http.PostAsync("https://api.openai.com/v1/completions", new StringContent(JsonConvert.SerializeObject(jsonContent), Encoding.UTF8, "application/json"));
-
-            // Read the response as a string
-            var resContext = await responseContent.Content.ReadAsStringAsync();
-
-            // Deserialize the response into a dynamic object
-            var apiData = JsonConvert.DeserializeObject<dynamic>(resContext);
-            label1.Text = apiData.choices[0].text;
-            // savedcontext = apiData.choices[0].context;
 
 
+
+
+
+
+                //HttpClient Http = new HttpClient();
+                //Http.DefaultRequestHeaders.Add("Authorization", $"Bearer {apiKey}");
+
+                //// JSON content for the API call
+
+
+                //var jsonContent = new
+                //{
+                //    prompt = textBox1.Text,
+
+                //    //context = savedcontext,
+                //    //AccessibleRole = "assistant",
+                //    model = "text-davinci-003",
+                //    max_tokens = 1000
+                //};
+
+
+                //// Make the API call
+                //var responseContent = await Http.PostAsync("https://api.openai.com/v1/completions", new StringContent(JsonConvert.SerializeObject(jsonContent), Encoding.UTF8, "application/json"));
+
+                //// Read the response as a string
+                //var resContext = await responseContent.Content.ReadAsStringAsync();
+
+                //// Deserialize the response into a dynamic object
+                //var apiData = JsonConvert.DeserializeObject<dynamic>(resContext);
+                //label1.Text = apiData.choices[0].text;
+                // savedcontext = apiData.choices[0].context;
+
+
+            }
         }
         List<Card> TableCard = new List<Card>(5) { null, null, null, null, null };
         private const int NUM_COLUMNS = 13;
@@ -580,6 +628,18 @@ namespace AI_Poker_Assistance
         private void ButtonComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             string selectedItem = ButtonComboBox.SelectedItem.ToString();
+            int selectedIndex = ButtonComboBox.SelectedIndex;
+            for (int i = selectedIndex + 1; i < ButtonComboBox.Items.Count && i <= selectedIndex + 2; i++)
+            { // Определение СБ и ББ
+                object nextItem = ButtonComboBox.Items[i];
+               // int BBPlayer = Convert.ToInt32(nextItem.Split('P')[1]);
+
+                // Делайте что-то с элементом "nextItem"
+            }                         //Определение ББ
+
+
+            // Делайте что-то с элементом "nextItem"
+
             // тут через ребёнка ищем родителя label->panel
             Control[] tbxs = this.Controls.Find(selectedItem, true);
             foreach (var label in tbxs)
@@ -618,6 +678,11 @@ namespace AI_Poker_Assistance
         private void button2_Click(object sender, EventArgs e)
         {
             LogWrite("---Flop---");
+        }
+
+        private void HeroComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

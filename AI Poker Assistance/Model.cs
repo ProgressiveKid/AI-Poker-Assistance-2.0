@@ -23,6 +23,8 @@ namespace AI_Poker_Assistance
 
         public double Stack { get; set; }
 
+        public string PanelName { get; set; }
+
     }
 
     public class Card
