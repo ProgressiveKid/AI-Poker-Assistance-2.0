@@ -43,6 +43,7 @@
             this.CountPlayer = new System.Windows.Forms.TextBox();
             this.HeroComboBox = new System.Windows.Forms.ComboBox();
             this.ButtonComboBox = new System.Windows.Forms.ComboBox();
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -194,6 +195,11 @@
             this.ButtonComboBox.Text = "Button";
             this.ButtonComboBox.SelectedIndexChanged += new System.EventHandler(this.ButtonComboBox_SelectedIndexChanged);
             // 
+            // contextMenuStrip1
+            // 
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.Size = new System.Drawing.Size(61, 4);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -236,6 +242,7 @@
         private System.Windows.Forms.ComboBox HeroComboBox;
         private System.Windows.Forms.ComboBox ButtonComboBox;
         private System.Windows.Forms.TextBox CountPlayer;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
     }
 }
 

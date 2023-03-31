@@ -14,7 +14,6 @@ using System.Net;
 using OpenAI;
 using OpenAI.GPT3.ObjectModels.RequestModels;
 using System.Web.Routing;
-using OpenAI.Api.V1;
 
 
 namespace AI_Poker_Assistance
@@ -114,26 +113,19 @@ namespace AI_Poker_Assistance
                 string text = Console.ReadLine();
 
                 // Создаем запрос к API OpenAI с использованием контекста разговора
-                var request = new RequestContext
-                {
-                    Engine = "davinci",
-                    Prompt = text,
-                    MaxTokens = 100,
-                    Stop = "\n",
-                    Context = conversationId != null ? new RequestContext(conversationId, null, null) : null
-                };
+              
 
-                // Отправляем запрос к API OpenAI
-                var result = api.Completions.Create(request);
+                //// Отправляем запрос к API OpenAI
+                //var result = api.Completions.Create(request);
 
-                // Получаем результат запроса
-                var responseText = result.Choices[0].Text;
+                //// Получаем результат запроса
+                //var responseText = result.Choices[0].Text;
 
-                // Сохраняем ID разговора из ответа API OpenAI
-                conversationId = result.GetContext()?.ConversationId;
+                //// Сохраняем ID разговора из ответа API OpenAI
+                //conversationId = result.GetContext()?.ConversationId;
 
-                // Выводим результат на экран
-                Console.WriteLine(responseText);
+                //// Выводим результат на экран
+                //Console.WriteLine(responseText);
 
 
 

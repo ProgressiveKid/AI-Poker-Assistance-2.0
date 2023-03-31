@@ -13,9 +13,9 @@ namespace AI_Poker_Assistance
 
 
 
-
     public class PlayerModel
     {
+        public int IDPlayer { get; set; }
         public string Name { get; set; }
         public string Position { get; set; }
 
