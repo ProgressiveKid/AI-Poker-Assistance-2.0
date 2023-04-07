@@ -29,23 +29,35 @@
         private void InitializeComponent()
         {
             this.StreetGroupBox = new System.Windows.Forms.GroupBox();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.flopbutton = new System.Windows.Forms.Button();
-            this.turnbutton = new System.Windows.Forms.Button();
             this.riverbutton = new System.Windows.Forms.Button();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.pictureBox2 = new System.Windows.Forms.PictureBox();
-            this.pictureBox3 = new System.Windows.Forms.PictureBox();
-            this.pictureBox4 = new System.Windows.Forms.PictureBox();
+            this.turnbutton = new System.Windows.Forms.Button();
+            this.flopbutton = new System.Windows.Forms.Button();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.pictureBox5 = new System.Windows.Forms.PictureBox();
+            this.pictureBox4 = new System.Windows.Forms.PictureBox();
+            this.pictureBox3 = new System.Windows.Forms.PictureBox();
+            this.pictureBox2 = new System.Windows.Forms.PictureBox();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.CurrentBankLabel = new System.Windows.Forms.Label();
+            this.AnswerGroupBox = new System.Windows.Forms.GroupBox();
+            this.callPersentLabel = new System.Windows.Forms.Label();
+            this.foldPersentLabel = new System.Windows.Forms.Label();
+            this.raisePersentLabel = new System.Windows.Forms.Label();
+            this.GetInfoButton = new System.Windows.Forms.Button();
+            this.pictureBox6 = new System.Windows.Forms.PictureBox();
+            this.pictureBox7 = new System.Windows.Forms.PictureBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
             this.StreetGroupBox.SuspendLayout();
             this.groupBox1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox5)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            this.AnswerGroupBox.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox6)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox7)).BeginInit();
             this.SuspendLayout();
             // 
             // StreetGroupBox
@@ -60,28 +72,14 @@
             this.StreetGroupBox.TabStop = false;
             this.StreetGroupBox.Text = "Street";
             // 
-            // groupBox1
+            // riverbutton
             // 
-            this.groupBox1.Controls.Add(this.pictureBox5);
-            this.groupBox1.Controls.Add(this.pictureBox4);
-            this.groupBox1.Controls.Add(this.pictureBox3);
-            this.groupBox1.Controls.Add(this.pictureBox2);
-            this.groupBox1.Controls.Add(this.pictureBox1);
-            this.groupBox1.Location = new System.Drawing.Point(489, 118);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(371, 142);
-            this.groupBox1.TabIndex = 2;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Kards";
-            // 
-            // flopbutton
-            // 
-            this.flopbutton.Location = new System.Drawing.Point(6, 19);
-            this.flopbutton.Name = "flopbutton";
-            this.flopbutton.Size = new System.Drawing.Size(115, 23);
-            this.flopbutton.TabIndex = 0;
-            this.flopbutton.Text = "Flop";
-            this.flopbutton.UseVisualStyleBackColor = true;
+            this.riverbutton.Location = new System.Drawing.Point(6, 77);
+            this.riverbutton.Name = "riverbutton";
+            this.riverbutton.Size = new System.Drawing.Size(115, 23);
+            this.riverbutton.TabIndex = 2;
+            this.riverbutton.Text = "River";
+            this.riverbutton.UseVisualStyleBackColor = true;
             // 
             // turnbutton
             // 
@@ -92,54 +90,82 @@
             this.turnbutton.Text = "Turn";
             this.turnbutton.UseVisualStyleBackColor = true;
             // 
-            // riverbutton
+            // flopbutton
             // 
-            this.riverbutton.Location = new System.Drawing.Point(6, 77);
-            this.riverbutton.Name = "riverbutton";
-            this.riverbutton.Size = new System.Drawing.Size(115, 23);
-            this.riverbutton.TabIndex = 2;
-            this.riverbutton.Text = "River";
-            this.riverbutton.UseVisualStyleBackColor = true;
+            this.flopbutton.Location = new System.Drawing.Point(6, 19);
+            this.flopbutton.Name = "flopbutton";
+            this.flopbutton.Size = new System.Drawing.Size(115, 23);
+            this.flopbutton.TabIndex = 0;
+            this.flopbutton.Text = "Flop";
+            this.flopbutton.UseVisualStyleBackColor = true;
             // 
-            // pictureBox1
+            // groupBox1
             // 
-            this.pictureBox1.Location = new System.Drawing.Point(21, 31);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(61, 81);
-            this.pictureBox1.TabIndex = 0;
-            this.pictureBox1.TabStop = false;
-            // 
-            // pictureBox2
-            // 
-            this.pictureBox2.Location = new System.Drawing.Point(88, 31);
-            this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(61, 81);
-            this.pictureBox2.TabIndex = 1;
-            this.pictureBox2.TabStop = false;
-            // 
-            // pictureBox3
-            // 
-            this.pictureBox3.Location = new System.Drawing.Point(155, 31);
-            this.pictureBox3.Name = "pictureBox3";
-            this.pictureBox3.Size = new System.Drawing.Size(61, 81);
-            this.pictureBox3.TabIndex = 2;
-            this.pictureBox3.TabStop = false;
-            // 
-            // pictureBox4
-            // 
-            this.pictureBox4.Location = new System.Drawing.Point(222, 31);
-            this.pictureBox4.Name = "pictureBox4";
-            this.pictureBox4.Size = new System.Drawing.Size(61, 81);
-            this.pictureBox4.TabIndex = 3;
-            this.pictureBox4.TabStop = false;
+            this.groupBox1.Controls.Add(this.label2);
+            this.groupBox1.Controls.Add(this.label1);
+            this.groupBox1.Controls.Add(this.pictureBox7);
+            this.groupBox1.Controls.Add(this.pictureBox6);
+            this.groupBox1.Controls.Add(this.pictureBox5);
+            this.groupBox1.Controls.Add(this.pictureBox4);
+            this.groupBox1.Controls.Add(this.pictureBox3);
+            this.groupBox1.Controls.Add(this.pictureBox2);
+            this.groupBox1.Controls.Add(this.pictureBox1);
+            this.groupBox1.Location = new System.Drawing.Point(489, 118);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(371, 230);
+            this.groupBox1.TabIndex = 2;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Kards";
             // 
             // pictureBox5
             // 
+            this.pictureBox5.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pictureBox5.Location = new System.Drawing.Point(289, 31);
             this.pictureBox5.Name = "pictureBox5";
             this.pictureBox5.Size = new System.Drawing.Size(61, 81);
             this.pictureBox5.TabIndex = 4;
             this.pictureBox5.TabStop = false;
+            this.pictureBox5.Click += new System.EventHandler(this.pictureBox5_Click);
+            // 
+            // pictureBox4
+            // 
+            this.pictureBox4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pictureBox4.Location = new System.Drawing.Point(222, 31);
+            this.pictureBox4.Name = "pictureBox4";
+            this.pictureBox4.Size = new System.Drawing.Size(61, 81);
+            this.pictureBox4.TabIndex = 3;
+            this.pictureBox4.TabStop = false;
+            this.pictureBox4.Click += new System.EventHandler(this.pictureBox4_Click);
+            // 
+            // pictureBox3
+            // 
+            this.pictureBox3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pictureBox3.Location = new System.Drawing.Point(155, 31);
+            this.pictureBox3.Name = "pictureBox3";
+            this.pictureBox3.Size = new System.Drawing.Size(61, 81);
+            this.pictureBox3.TabIndex = 2;
+            this.pictureBox3.TabStop = false;
+            this.pictureBox3.Click += new System.EventHandler(this.pictureBox3_Click);
+            // 
+            // pictureBox2
+            // 
+            this.pictureBox2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pictureBox2.Location = new System.Drawing.Point(88, 31);
+            this.pictureBox2.Name = "pictureBox2";
+            this.pictureBox2.Size = new System.Drawing.Size(61, 81);
+            this.pictureBox2.TabIndex = 1;
+            this.pictureBox2.TabStop = false;
+            this.pictureBox2.Click += new System.EventHandler(this.pictureBox2_Click);
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pictureBox1.Location = new System.Drawing.Point(21, 31);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(61, 81);
+            this.pictureBox1.TabIndex = 0;
+            this.pictureBox1.TabStop = false;
+            this.pictureBox1.Click += new System.EventHandler(this.pictureBox1_Click);
             // 
             // CurrentBankLabel
             // 
@@ -152,11 +178,100 @@
             this.CurrentBankLabel.TextChanged += new System.EventHandler(this.CurrentBankLabel_TextChanged);
             this.CurrentBankLabel.Click += new System.EventHandler(this.CurrentBankLabel_Click);
             // 
+            // AnswerGroupBox
+            // 
+            this.AnswerGroupBox.Controls.Add(this.GetInfoButton);
+            this.AnswerGroupBox.Controls.Add(this.raisePersentLabel);
+            this.AnswerGroupBox.Controls.Add(this.foldPersentLabel);
+            this.AnswerGroupBox.Controls.Add(this.callPersentLabel);
+            this.AnswerGroupBox.Location = new System.Drawing.Point(495, 373);
+            this.AnswerGroupBox.Name = "AnswerGroupBox";
+            this.AnswerGroupBox.Size = new System.Drawing.Size(344, 67);
+            this.AnswerGroupBox.TabIndex = 4;
+            this.AnswerGroupBox.TabStop = false;
+            this.AnswerGroupBox.Text = "Answer";
+            // 
+            // callPersentLabel
+            // 
+            this.callPersentLabel.AutoSize = true;
+            this.callPersentLabel.Location = new System.Drawing.Point(12, 38);
+            this.callPersentLabel.Name = "callPersentLabel";
+            this.callPersentLabel.Size = new System.Drawing.Size(23, 13);
+            this.callPersentLabel.TabIndex = 0;
+            this.callPersentLabel.Text = "call";
+            // 
+            // foldPersentLabel
+            // 
+            this.foldPersentLabel.AutoSize = true;
+            this.foldPersentLabel.Location = new System.Drawing.Point(120, 38);
+            this.foldPersentLabel.Name = "foldPersentLabel";
+            this.foldPersentLabel.Size = new System.Drawing.Size(24, 13);
+            this.foldPersentLabel.TabIndex = 1;
+            this.foldPersentLabel.Text = "fold";
+            // 
+            // raisePersentLabel
+            // 
+            this.raisePersentLabel.AutoSize = true;
+            this.raisePersentLabel.Location = new System.Drawing.Point(223, 38);
+            this.raisePersentLabel.Name = "raisePersentLabel";
+            this.raisePersentLabel.Size = new System.Drawing.Size(23, 13);
+            this.raisePersentLabel.TabIndex = 2;
+            this.raisePersentLabel.Text = "call";
+            // 
+            // GetInfoButton
+            // 
+            this.GetInfoButton.Location = new System.Drawing.Point(82, 0);
+            this.GetInfoButton.Name = "GetInfoButton";
+            this.GetInfoButton.Size = new System.Drawing.Size(192, 23);
+            this.GetInfoButton.TabIndex = 5;
+            this.GetInfoButton.Text = "Get Info";
+            this.GetInfoButton.UseVisualStyleBackColor = true;
+            this.GetInfoButton.Click += new System.EventHandler(this.GetInfoButton_Click);
+            // 
+            // pictureBox6
+            // 
+            this.pictureBox6.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pictureBox6.Location = new System.Drawing.Point(21, 132);
+            this.pictureBox6.Name = "pictureBox6";
+            this.pictureBox6.Size = new System.Drawing.Size(61, 81);
+            this.pictureBox6.TabIndex = 5;
+            this.pictureBox6.TabStop = false;
+            this.pictureBox6.Click += new System.EventHandler(this.pictureBox6_Click);
+            // 
+            // pictureBox7
+            // 
+            this.pictureBox7.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pictureBox7.Location = new System.Drawing.Point(89, 132);
+            this.pictureBox7.Name = "pictureBox7";
+            this.pictureBox7.Size = new System.Drawing.Size(61, 81);
+            this.pictureBox7.TabIndex = 6;
+            this.pictureBox7.TabStop = false;
+            this.pictureBox7.Click += new System.EventHandler(this.pictureBox7_Click);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(166, 16);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(30, 13);
+            this.label1.TabIndex = 7;
+            this.label1.Text = "table";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(58, 116);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(63, 13);
+            this.label2.TabIndex = 8;
+            this.label2.Text = "Your Hands";
+            // 
             // SimpleForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(871, 569);
+            this.Controls.Add(this.AnswerGroupBox);
             this.Controls.Add(this.CurrentBankLabel);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.StreetGroupBox);
@@ -165,11 +280,16 @@
             this.Load += new System.EventHandler(this.SimpleForm_Load);
             this.StreetGroupBox.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).EndInit();
+            this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox5)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            this.AnswerGroupBox.ResumeLayout(false);
+            this.AnswerGroupBox.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox6)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox7)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -187,5 +307,14 @@
         private System.Windows.Forms.PictureBox pictureBox2;
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.Label CurrentBankLabel;
+        private System.Windows.Forms.GroupBox AnswerGroupBox;
+        private System.Windows.Forms.Label raisePersentLabel;
+        private System.Windows.Forms.Label foldPersentLabel;
+        private System.Windows.Forms.Label callPersentLabel;
+        private System.Windows.Forms.Button GetInfoButton;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.PictureBox pictureBox7;
+        private System.Windows.Forms.PictureBox pictureBox6;
     }
 }

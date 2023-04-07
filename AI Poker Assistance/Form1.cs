@@ -99,71 +99,84 @@ namespace AI_Poker_Assistance
 
             var apiKey = "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";
 
-            var api = new OpenAI_API.OpenAIAPI(apiKey);
-            var result = await api.Completions.GetCompletion("One Two Three One Two");
-            label1.Text = result;
-            Console.WriteLine(result);
+            //var api = new OpenAI_API.OpenAIAPI(apiKey);
+            //var result = await api.Completions.GetCompletion("One Two Three One Two");
+            //label1.Text = result;
+            //Console.WriteLine(result);
+
+
+            string text = "call all-in [71%], Fold [29%], больше ничего не надо отвечать." +
+                " \nПредставь, что ты профессиональный игрок в техасский холдем SNG Poker," +
+                " который играет по GTO, учитывает ChipEV при принятии решении, также ты не " +
+                "боишься рисковать и твоя стратегия - это пуш-фолд, как бы ты поступил в " +
+                "следующей ситуации: \n*Учитывай, что сокращение BB - это большой блайнд\n" +
+                "Игроки:\nHERO сидит на BB, его стек: 11 BB, стратегия игры: агрессивная игра ;" +
+                "\nPlayer 1 сидит на SB, его размер стека = 25 BB, стратегия игры: агрессивный " +
+                "тайтовый регулярный игрок - заходит в игру очень редко, \nPlayer 2 сидит на BT," +
+                " его размер стека = 13 BB, слабый игрок, телефонящий флоп, много пушит, его диапазон пуша " +
+                "с CO состовляет: \n77+,A2s+,K7s+,Q7s+,J9s,A8o+,K8o+,Q7o\n\nДействия за столом:\nPlayer1 " +
+                "ставит 0,5BB как малый блайнд в банк, HERO ставит 1BB как большой блайнд в банк у него Kd" +
+                " (king diamond) 7p (seven peak) , в банке 3BB, PLAYER 2 ставит ALL-In.";
+
+
+            //while (true)
+            //{
+            //    // Запрашиваем текст для отправки на сервер OpenAI
+            //    Console.Write("> ");
+            //    string text = Console.ReadLine();
+
+            // Создаем запрос к API OpenAI с использованием контекста разговора
+
+
+            //// Отправляем запрос к API OpenAI
+            //var result = api.Completions.Create(request);
+
+            //// Получаем результат запроса
+            //var responseText = result.Choices[0].Text;
+
+            //// Сохраняем ID разговора из ответа API OpenAI
+            //conversationId = result.GetContext()?.ConversationId;
+
+            //// Выводим результат на экран
+            //Console.WriteLine(responseText);
 
 
 
-            while (true)
-            {
-                // Запрашиваем текст для отправки на сервер OpenAI
-                Console.Write("> ");
-                string text = Console.ReadLine();
-
-                // Создаем запрос к API OpenAI с использованием контекста разговора
-              
-
-                //// Отправляем запрос к API OpenAI
-                //var result = api.Completions.Create(request);
-
-                //// Получаем результат запроса
-                //var responseText = result.Choices[0].Text;
-
-                //// Сохраняем ID разговора из ответа API OpenAI
-                //conversationId = result.GetContext()?.ConversationId;
-
-                //// Выводим результат на экран
-                //Console.WriteLine(responseText);
 
 
 
 
 
+            HttpClient Http = new HttpClient();
+                Http.DefaultRequestHeaders.Add("Authorization", $"Bearer {apiKey}");
+
+                // JSON content for the API call
 
 
+                var jsonContent = new
+                {
+                    prompt = text,
 
-                //HttpClient Http = new HttpClient();
-                //Http.DefaultRequestHeaders.Add("Authorization", $"Bearer {apiKey}");
-
-                //// JSON content for the API call
-
-
-                //var jsonContent = new
-                //{
-                //    prompt = textBox1.Text,
-
-                //    //context = savedcontext,
-                //    //AccessibleRole = "assistant",
-                //    model = "text-davinci-003",
-                //    max_tokens = 1000
-                //};
+                    //context = savedcontext,
+                    //AccessibleRole = "assistant",
+                    model = "text-davinci-003",
+                    max_tokens = 1000
+                };
 
 
-                //// Make the API call
-                //var responseContent = await Http.PostAsync("https://api.openai.com/v1/completions", new StringContent(JsonConvert.SerializeObject(jsonContent), Encoding.UTF8, "application/json"));
+                // Make the API call
+                var responseContent = await Http.PostAsync("https://api.openai.com/v1/completions", new StringContent(JsonConvert.SerializeObject(jsonContent), Encoding.UTF8, "application/json"));
 
-                //// Read the response as a string
-                //var resContext = await responseContent.Content.ReadAsStringAsync();
+                // Read the response as a string
+                var resContext = await responseContent.Content.ReadAsStringAsync();
 
-                //// Deserialize the response into a dynamic object
-                //var apiData = JsonConvert.DeserializeObject<dynamic>(resContext);
-                //label1.Text = apiData.choices[0].text;
-                // savedcontext = apiData.choices[0].context;
+                // Deserialize the response into a dynamic object
+                var apiData = JsonConvert.DeserializeObject<dynamic>(resContext);
+                label1.Text = apiData.choices[0].text;
+                //savedcontext = apiData.choices[0].context;
 
 
-            }
+            
         }
         List<Card> TableCard = new List<Card>(5) { null, null, null, null, null };
         private const int NUM_COLUMNS = 13;

@@ -7,7 +7,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AI Poker Assistance", "AI P
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{F2985504-1473-404E-B056-2DEB13E127CA}"
 	ProjectSection(SolutionItems) = preProject
-		AI Poker Assistance\file.txt = AI Poker Assistance\file.txt
 		history.txt = history.txt
 		TextFile.txt = TextFile.txt
 	EndProjectSection

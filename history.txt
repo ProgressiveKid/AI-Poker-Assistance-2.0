@@ -1,18 +1,18 @@
 Position	Notes about player	Stack (in Big blinds)
-UTG1	Unknown player	13
+UTG1	Aggressive	20
 
-UTG2	Calls too much	16
+UTG2	Bluffs often	18
 
-MP1	Aggressive	19
+MP1	Aggressive	22
 
-MP2	Calls too much	12
+MP2	Tight player	17
 
-MP3	Calls too much	13
+MP3	Bluffs often	21
 
-CO	Aggressive	18
+CO	Calls too much	22
 
-BTN	Calls too much	21
+BTN	Calls too much	16
 
-SB	Tight player	25
+SB	Calls too much	21
 
-BB	Calls too much	18
+BB	Unknown player	11

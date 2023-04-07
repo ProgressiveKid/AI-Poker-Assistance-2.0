@@ -16,7 +16,7 @@ namespace AI_Poker_Assistance
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new SimpleForm());
+            Application.Run(new SimpleForm()) ;
         }
     }
 }

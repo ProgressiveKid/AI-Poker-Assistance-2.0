@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
+using WindowsFormsControlLibrary;
 
 namespace AI_Poker_Assistance
 {
@@ -25,6 +27,9 @@ namespace AI_Poker_Assistance
 
         public string PanelName { get; set; }
 
+        public double LastBet { get; set; }
+
+        public UserControl1 userControl { get; set; }
     }
 
     public class Card
