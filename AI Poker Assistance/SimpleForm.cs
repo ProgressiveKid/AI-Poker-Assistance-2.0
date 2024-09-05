@@ -12,6 +12,11 @@ using WindowsFormsControlLibrary;
 using System.Windows.Forms;
 using System.Net.Http;
 using Newtonsoft.Json;
+using AI_Poker_Assistance.Models;
+using Svg;
+using AI_Poker_Assistance.Models.Enums;
+using AI_Poker_Assistance.Services;
+
 namespace AI_Poker_Assistance
 {
     public partial class SimpleForm : Form
@@ -53,20 +58,9 @@ namespace AI_Poker_Assistance
         private const int IMAGE_SIZE = 50; // размер изображения
         private const int GAP_SIZE = 10; // промежуток между изображениями
         List<PlayerModel> players = new List<PlayerModel>();
+
         List<PlayerModel> playersInGame;
-        public async void MakeApiDeck()
-        {
-            //генератор колоды
-            HttpClient client1 = new HttpClient();
-            HttpResponseMessage response1 = await client1.GetAsync("https://deckofcardsapi.com/api/deck/new/");
-            string responseBody1 = await response1.Content.ReadAsStringAsync();
-            Deck iddeck = JsonConvert.DeserializeObject<Deck>(responseBody1);
-            // получение карт
-            HttpClient client = new HttpClient();
-            HttpResponseMessage response = await client.GetAsync($"https://deckofcardsapi.com/api/deck/{iddeck.deck_id}/draw/?count=52");
-            string responseBody = await response.Content.ReadAsStringAsync();
-            MainDeck = JsonConvert.DeserializeObject<Deck>(responseBody);
-        } //Генерируем колоды в само начале работы
+     //   private DeckServise deckServise;
         public void PanelPicturesClick(object PanelSender)
         {
             Form galleryForm = new Form();
@@ -89,7 +83,7 @@ namespace AI_Poker_Assistance
                 {
                     if (imageIndex > 52) // Если заполнены все ячейки - выходим из цикла
                         break;
-                    Card card = MainDeck.cards[imageIndex];
+                    Card card = null;//MainDeck.cards[imageIndex];
                     PictureBox pictureBox = new PictureBox();
                     pictureBox.Size = new Size(imageWidth, imageHeight);
                     pictureBox.Location = new Point(col * (imageWidth + GAP_SIZE), row * (imageHeight + GAP_SIZE));
@@ -133,9 +127,9 @@ namespace AI_Poker_Assistance
                             if (countOfBoard == 6 || countOfBoard == 7)
                             {
                                 if (countOfBoard == 6)
-                                PlayerCard[0] = card;
+                                    PlayerCard[0] = card;
                                 else
-                                PlayerCard[1] = card;
+                                    PlayerCard[1] = card;
 
 
                             }
@@ -156,22 +150,25 @@ namespace AI_Poker_Assistance
             // Открываем галерею
             galleryForm.ShowDialog();
         } // Метод отрисовки миркоформы для выбора кард
-        public void PlayerModelGenerator() // Генерация игроков
+        private List<Players> PlayerModelGenerator(DeckServise deckServise, int countPlayers) // Генерация игроков
         {
+            List<Players> players = new List<Players>();
             Random random = new Random();
             string[] names = { "John", "Sarah", "Mike", "Emily", "David", "Emma", "Alex", "Olivia", "Daniel" };
             string[] notes = { "Tight player", "Aggressive", "Calls too much", "Bluffs often", "Unknown player" };
             // Можно прикрутить Entity Fraemwork
-            for (int i = 0; i < 9; i++)
+
+            for (int i = 0; i < countPlayers; i++)
             {
-                PlayerModel player = new PlayerModel();
-                player.IDPlayer = i;
-                player.Name = names[i];
-                // player.Position = Enum.GetValues(typeof(PokerPosition)).GetValue(i).ToString();
-                player.Notes = notes[random.Next(notes.Length)];
-                player.Stack = random.Next(10, 26);
+                Players player = new Players();                
+                player.IdPlayer = i;
+                player.NamePlayer = names[i];
+                player.CardsPlayer = deckServise.GiveCardsFromDeck(2, ref MainDeckM);
+                player.StackPlayer = random.Next(10, 26);
+                player.Position = (EnumPostions)i;
                 players.Add(player);
             }
+            return players;
         }
         public double CurrentBet { get; set; }
         public double CurrentBank { get; set; }
@@ -214,10 +211,30 @@ namespace AI_Poker_Assistance
         public void NewAction(int indexPlayer)
         {
             // UserControl1 userControl1 = (UserControl1)(this.Controls.Find("UserControl " + playersInGame[indexPlayer].IDPlayer, true)).First();
-            UserControl1 userControl1 = playersInGame[indexPlayer].userControl as UserControl1;
-            userControl1.UserActions.Visible = true;
-            userControl1.indicatorOfTurn.Visible = true;
+
+             foreach (Control control in this.Controls)
+            {
+                // Если нашли контрол с нужным TabIndex, возвращаем его
+                if (control.TabIndex == indexPlayer && control is UserControl1)
+                {
+                    UserControl1 userC = (UserControl1)control as UserControl1;
+                    userC.UserActions.Visible = true;
+                    userC.indicatorOfTurn.Visible = true;
+                    break;
+                }
+            }
         }
+
+
+        private IEnumerable<Control> GetAllControls(Control parent)
+        {
+            // Собираем все текущие контролы и рекурсивно добавляем дочерние
+            var controls = parent.Controls.Cast<Control>();
+
+            // Используем SelectMany для объединения всех контролов с их дочерними
+            return controls.SelectMany(ctrl => GetAllControls(ctrl)).Concat(controls);
+        }
+
         public void ActionPlayer(int idPlayer) // Работает на прфелоп
         {
             if (CurrentStreet == PokerStreet.Preflop)
@@ -289,7 +306,9 @@ namespace AI_Poker_Assistance
         public int HightId = 9;
         public void AreUSuperLast(int idCurrentPlayer)
         {
-            if (CurrentStreet == PokerStreet.Preflop)
+            int nextIndexPlayer = MainPlayers.Select(u => u.IdPlayer).FirstOrDefault(u => u > idCurrentPlayer);
+
+            if (MainGameSession.curStreet == StreetsEnum.PrefLop)
             {
                 //Это касается префлопа
                 int currentIndex = 0;
@@ -303,14 +322,7 @@ namespace AI_Poker_Assistance
                 }
                 else
                 { // Доходим до последнего
-                    for (int i = 0; i < playersInGame.Count; i++)
-                    { // тут находим существующий следующйи элемент
-                        if (playersInGame[i].IDPlayer == nextCurrentPlayer)
-                        {
-                            currentIndex = playersInGame.IndexOf(playersInGame[i]);
-                            break;
-                        }
-                    }
+                   
                 }
                 if (nextCurrentPlayer == 2)
                 {
@@ -339,7 +351,7 @@ namespace AI_Poker_Assistance
 
 
                 }
-                NewAction(currentIndex);
+                NewAction(nextIndexPlayer);
             }
         }
         public bool AreULast(int id)
@@ -386,36 +398,68 @@ namespace AI_Poker_Assistance
             }
             return AllPlayerBet;
         }
-        public void LoadPlayerPanel(int countPlayer)
+
+
+
+        public SimpleForm()
+        {
+            InitializeComponent();
+        }
+        /// <summary>
+        /// Главная колода - она на всю игру
+        /// TODO - может быть вынести получение значения колоды в отдельный класс, но пока для удобства это просто глоб переменная
+        /// </summary>
+        public static List<Card> MainDeckM; // колода
+        public static List<Players> MainPlayers;// игроки
+        public static GameSession MainGameSession;
+        public static int CurIndexPlayer { get; set; } // указатель на игроков
+
+        private async void SimpleForm_Load(object sender, EventArgs e)
+        {
+            // MakeApiDeck();
+            MainGameSession = new GameSession() { Bank = 0, Ante = 0.5 , SmallBlind = 1, BigBlaind = 2, curMaxBet = 2 };
+            DeckServise deckServise = new DeckServise();
+            MainDeckM = await deckServise.CreateDeck();
+            MainPlayers = PlayerModelGenerator(deckServise, 9);
+            LoadPlayerPanel(ref MainPlayers);
+
+
+            //LoadPlayerPanel(9);
+            // playersInGame = players; // это буфер
+            // TakeFromAllStartMoney();
+        }
+
+        public void LoadPlayerPanel(ref List<Players> listPlayers)
         {
             int panelHeight = this.ClientSize.Height / 9;
             int panelWidth = 300;
             // Создаем 9 панелей
-            for (int i = 0; i < 9; i++)
+            for (int i = 0; i < listPlayers.Count; i++)
             {
                 UserControl1 userControl1 = new UserControl1();
 
-                userControl1.Name = "UserControl " + players[i].IDPlayer;
+                userControl1.Name = listPlayers[i].NamePlayer + " " + listPlayers[i].IdPlayer;
+                userControl1.TabIndex = listPlayers[i].IdPlayer; // так не правильно но всё же
                 userControl1.Location = new Point(0, i * panelHeight);
-                userControl1.positionlabel.Text = Enum.GetValues(typeof(PokerPosition)).GetValue(i).ToString();
-                players[i].Position = Enum.GetValues(typeof(PokerPosition)).GetValue(i).ToString();
-                userControl1.stacklabel.Text = players[i].Stack.ToString();
-                userControl1.nametexbox.Text = players[i].Name;
-                
-                userControl1.nametexbox.TextChanged += (sender, e) =>
-                {
-                    int idCurrentPlayer1 = Convert.ToInt32(userControl1.Name.Split(' ')[1]);
-                    int indexCurrentPlayer1 = 0;
-                    foreach (var a in playersInGame)
-                    {
-                        if (a.IDPlayer == idCurrentPlayer1)
-                        {
-                            indexCurrentPlayer1 = playersInGame.IndexOf(a);
-                        }
-                    }
-                    players[indexCurrentPlayer1].Name = userControl1.nametexbox.Text;
-                }; // Смена имени игрока
-                players[i].userControl = userControl1;
+                userControl1.positionlabel.Text = listPlayers[i].Position.ToString();
+                userControl1.stacklabel.Text = listPlayers[i].StackPlayer.ToString();
+                userControl1.nametexbox.Text = listPlayers[i].NamePlayer;
+
+                //userControl1.nametexbox.TextChanged += (sender, e) =>
+                //{
+                //    int idCurrentPlayer1 = Convert.ToInt32(userControl1.Name.Split(' ')[1]);
+                //    int indexCurrentPlayer1 = 0;
+                //    foreach (var a in playersInGame)
+                //    {
+                //        if (a.IDPlayer == idCurrentPlayer1)
+                //        {
+                //            indexCurrentPlayer1 = playersInGame.IndexOf(a);
+                //        }
+                //    }
+                //    players[indexCurrentPlayer1].Name = userControl1.nametexbox.Text;
+                //}; // Смена имени игрока
+                //players[i].userControl = userControl1;
+
                 if (i == 2)
                 {
                     userControl1.UserActions.Visible = true;
@@ -425,56 +469,56 @@ namespace AI_Poker_Assistance
                 {
                     userControl1.UserActions.Visible = false;
                 }
+
+
+
+
                 userControl1.callbutton.Click += (sender, e) =>
                 {
-                    int idCurrentPlayer = Convert.ToInt32(userControl1.Name.Split(' ')[1]);
-                    int indexCurrentPlayer = 0;
-                    foreach (var a in playersInGame)
-                    {
-                        if (a.IDPlayer == idCurrentPlayer)
-                        {
-                            indexCurrentPlayer = playersInGame.IndexOf(a);
-                        }
-                    }
-                    if (CurrentBet > playersInGame[indexCurrentPlayer].LastBet)
+                    int indexCurrentPlayer = userControl1.TabIndex;
+
+                    if (MainGameSession.curMaxBet > MainPlayers[indexCurrentPlayer].LastBet)
                     { // Были действия от нас раньше
-                        double MoneyToCall = CurrentBet - playersInGame[indexCurrentPlayer].LastBet;
-                        MakeCall(indexCurrentPlayer, MoneyToCall);
+                        double MoneyToCall = MainGameSession.curMaxBet - MainPlayers[indexCurrentPlayer].LastBet;
+                        MainGameSession.Bank += MoneyToCall;
+                        MainGameSession.curMaxBet = MoneyToCall;
+                        MainPlayers[indexCurrentPlayer].StackPlayer -= MoneyToCall;
+                        MainPlayers[indexCurrentPlayer].LastBet = MainGameSession.curMaxBet;
+                        userControl1.currectbet.Text = MoneyToCall.ToString();
+                        //MakeCall(indexCurrentPlayer, MoneyToCall);
                     }
                     else // Колим впервые
                     {
-                        MakeBet(indexCurrentPlayer, CurrentBet); // 
+                        MainGameSession.Bank += MainGameSession.curMaxBet;
+                        MainGameSession.curMaxBet = MainGameSession.curMaxBet;
+                        MainPlayers[indexCurrentPlayer].StackPlayer -= MainGameSession.curMaxBet;
+                        MainPlayers[indexCurrentPlayer].LastBet = MainGameSession.curMaxBet;
+                        userControl1.currectbet.Text = MainGameSession.curMaxBet.ToString();
+                        // MakeBet(indexCurrentPlayer, CurrentBet); // 
                     }
                     userControl1.currentactionlabel.Text = "CALL";
-                    userControl1.currectbet.Text = CurrentBet.ToString();
-                    userControl1.stacklabel.Text = playersInGame[indexCurrentPlayer].Stack.ToString();
+                    userControl1.stacklabel.Text = MainPlayers[indexCurrentPlayer].StackPlayer.ToString();
                     userControl1.UserActions.Visible = false;
                     userControl1.indicatorOfTurn.Visible = false;
-                    AreUSuperLast(idCurrentPlayer);
+
+
+                    int indexNextPlayer = GetNextPlayerOrNextStreet(indexCurrentPlayer);
+                    NewAction(indexNextPlayer);
+
                 };
                 userControl1.foldbutton.Click += (sender, e) =>
                 {
-                    int ii = Convert.ToInt32(userControl1.Name.Split(' ')[1]);
-                    foreach (var a in playersInGame)
-                    {
-                        if (a.IDPlayer == ii)
-                        {
-                            playersInGame.Remove(a);
-                            break;
-                        }
-                    }
-                    foreach (var a in playersInGame)
-                    {
-                        if (a.IDPlayer > HightId)
-                        {
-                            HightId = a.IDPlayer;
-                        }
-                    }
+                    int indexCurrentPlayer = userControl1.TabIndex;
+                    //  var playerForDelete = MainPlayers.Select(u => u).Where(u => u.IdPlayer == indexCurrentPlayer).FirstOrDefault();
+                    MainPlayers[indexCurrentPlayer] = null;
+
                     userControl1.currentactionlabel.Text = "FOLD";
                     userControl1.UserActions.Visible = false;
                     userControl1.indicatorOfTurn.Visible = false;
                     userControl1.BackColor = Color.DarkGray;
-                    AreUSuperLast(ii);
+
+                    int indexNextPlayer = GetNextPlayerOrNextStreet(indexCurrentPlayer);
+                    NewAction(indexNextPlayer);
                 };
                 userControl1.raisebutton.Click += (sender, e) =>
                 {
@@ -509,50 +553,62 @@ namespace AI_Poker_Assistance
                     userControl1.foldbutton.Visible = false;
                 };
                 Controls.Add(userControl1);
-                //Panel panel = new Panel();
-                //panel.Size = new Size(panelWidth, panelHeight);
-                //panel.Location = new Point(0, i * panelHeight);
-                //panel.BorderStyle = BorderStyle.FixedSingle;
-                //panel.Name = i.ToString();
-                //Controls.Add(panel);
-                //// Добавляем label
-                //Label PositionLabel = new Label(); 
-                //PositionLabel.Text = Enum.GetValues(typeof(PokerPosition)).GetValue(i).ToString();
-                //players[i].Position = Enum.GetValues(typeof(PokerPosition)).GetValue(i).ToString();
-                //PositionLabel.Location = new Point(10, panelHeight / 2 - PositionLabel.Height / 2);
-                //panel.Controls.Add(PositionLabel);
-                //// Добавляем кнопку NOTES
-                //Button NotesButton = new Button();
-                //NotesButton.Text = "NOTES";
-                //NotesButton.Location = new Point(PositionLabel.Right, PositionLabel.Top+20 + PositionLabel.Height / 2 - NotesButton.Height / 2);
-                //panel.Controls.Add(NotesButton);
-                ////Имена игроков
-                //TextBox NamePlayerTextBox = new TextBox();
-                //NamePlayerTextBox.Location = new Point(PositionLabel.Right, PositionLabel.Top - 10 + PositionLabel.Height / 2 - NotesButton.Height / 2);
-                //NamePlayerTextBox.Name = players[i].Name;
-                //NamePlayerTextBox.Text = players[i].Name;
-                //panel.Controls.Add(NamePlayerTextBox);
-                ////Stack
-                ////Label StackLabel = new Label();
-                ////StackLabel.Text = players[i].Stack.ToString();
-                ////NamePlayerTextBox.Location = new Point(PositionLabel.Right+NamePlayerTextBox.Width + 10, PositionLabel.Top + 20 + PositionLabel.Height / 2 - NotesButton.Height / 2);
-                ////StackLabel.Name = players[i].Name + " " + players[i].Stack;
-                ////panel.Controls.Add(StackLabel);
             }
         } // Загрузка интерфейса 
-        public SimpleForm()
+
+
+        //private void SimpleForm_Load(object sender, EventArgs e)
+        //{
+        //    MakeApiDeck();
+        //    PlayerModelGenerator();
+        //    LoadPlayerPanel(9);
+        //    playersInGame = players; // это буфер
+        //    TakeFromAllStartMoney();
+        //}
+        public int GetNextPlayerOrNextStreet(int curIndexPlayer)
         {
-            InitializeComponent();
+            // тут будет метод который вернёт действия следующему игроку или дальше даст улицу
+            // метод сравнит все или игроки по очереди уровняли ставку - > если нет, то идём на следующего от актуального человека начиная по кругу
+            // иначе даём новую улицу
+            //AreUSuperLast(idCurrentPlayer);
+            double curLastMaxBet = MainGameSession.curMaxBet;
+            bool checkAllCall = MainPlayers.All(u => u.LastBet == curLastMaxBet);
+            if (checkAllCall)
+            {
+                // меняем на новую улицу
+
+                StreetsEnum currentStreet = MainGameSession.curStreet;
+                StreetsEnum[] streets = (StreetsEnum[])Enum.GetValues(typeof(StreetsEnum));
+                int currentIndex = Array.IndexOf(streets, currentStreet);
+                // Проверяем, является ли текущий элемент последним
+                if (currentIndex == streets.Length - 1)
+                {
+                    // всё шоудаун
+                    return 1;
+
+                }
+                else
+                {
+                    // Определяем следующий индекс
+                    MainGameSession.curStreet = (StreetsEnum)currentIndex+1;
+                    MainGameSession.curMaxBet = 0;
+                    var nextPlayer = MainPlayers.Select(u => u.IdPlayer).Min();
+                    return nextPlayer;
+                }
+             
+                   
+            }
+            else
+            {
+                // идём дальше по ходу 
+                var nextPlayer = MainPlayers.Select(u => u).Where(u => u != null).FirstOrDefault(u => u.IdPlayer > curIndexPlayer && u.LastBet < curLastMaxBet)
+                    ?? MainPlayers.FirstOrDefault(u => u.IdPlayer >= 0 && u.LastBet < curLastMaxBet);
+                // получаем следующего пользователя который должен ходить
+                return nextPlayer.IdPlayer;
+            }
         }
-        BindingSource bindingSource = new BindingSource();
-        private void SimpleForm_Load(object sender, EventArgs e)
-        {
-            MakeApiDeck();
-            PlayerModelGenerator();
-            LoadPlayerPanel(9);
-            playersInGame = players; // это буфер
-            TakeFromAllStartMoney();
-        }
+
+
         private void CurrentBankLabel_Click(object sender, EventArgs e)
         {
         }

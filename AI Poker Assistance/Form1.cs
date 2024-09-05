@@ -14,7 +14,7 @@ using System.Net;
 using OpenAI;
 using OpenAI.GPT3.ObjectModels.RequestModels;
 using System.Web.Routing;
-
+using AI_Poker_Assistance.Models;
 
 namespace AI_Poker_Assistance
 {
@@ -216,7 +216,7 @@ namespace AI_Poker_Assistance
 
 
 
-                    Card card = MainDeck.cards[imageIndex];
+                    Card card = null;//MainDeck.cards[imageIndex];
                     PictureBox pictureBox = new PictureBox();
 
 

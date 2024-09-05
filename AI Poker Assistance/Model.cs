@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AI_Poker_Assistance.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -32,7 +33,7 @@ namespace AI_Poker_Assistance
         public UserControl1 userControl { get; set; }
     }
 
-    public class Card
+    public class CardAA
     {
         public string code { get; set; }
         public string image { get; set; }
@@ -41,13 +42,13 @@ namespace AI_Poker_Assistance
         public string suit { get; set; }
     }
 
-    public class Images
+    public class ImagesAA
     {
         public string svg { get; set; }
         public string png { get; set; }
     }
 
-    public class Deck
+    public class DeckAAA
     {
         public bool success { get; set; }
         public string deck_id { get; set; }
