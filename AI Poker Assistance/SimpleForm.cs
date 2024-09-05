@@ -551,7 +551,7 @@ namespace AI_Poker_Assistance
                     });
                     userControl1.callbutton.Visible = false;
                     userControl1.foldbutton.Visible = false;
-                };
+                }; //
                 Controls.Add(userControl1);
             }
         } // Загрузка интерфейса 
