@@ -410,7 +410,7 @@ namespace AI_Poker_Assistance
         /// TODO - может быть вынести получение значения колоды в отдельный класс, но пока для удобства это просто глоб переменная
         /// </summary>
         public static List<Card> MainDeckM; // колода
-        public static List<Players> MainPlayers;// игроки
+        public static List<Players> MainPlayers;// игроки//
         public static GameSession MainGameSession;
         public static int CurIndexPlayer { get; set; } // указатель на игроков
 
