@@ -33,6 +33,10 @@
             this.turnbutton = new System.Windows.Forms.Button();
             this.flopbutton = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.pictureBox7 = new System.Windows.Forms.PictureBox();
+            this.pictureBox6 = new System.Windows.Forms.PictureBox();
             this.pictureBox5 = new System.Windows.Forms.PictureBox();
             this.pictureBox4 = new System.Windows.Forms.PictureBox();
             this.pictureBox3 = new System.Windows.Forms.PictureBox();
@@ -40,24 +44,25 @@
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.CurrentBankLabel = new System.Windows.Forms.Label();
             this.AnswerGroupBox = new System.Windows.Forms.GroupBox();
-            this.callPersentLabel = new System.Windows.Forms.Label();
-            this.foldPersentLabel = new System.Windows.Forms.Label();
-            this.raisePersentLabel = new System.Windows.Forms.Label();
             this.GetInfoButton = new System.Windows.Forms.Button();
-            this.pictureBox6 = new System.Windows.Forms.PictureBox();
-            this.pictureBox7 = new System.Windows.Forms.PictureBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
+            this.raisePersentLabel = new System.Windows.Forms.Label();
+            this.foldPersentLabel = new System.Windows.Forms.Label();
+            this.callPersentLabel = new System.Windows.Forms.Label();
+            this.labelBank = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.labelStreet = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.labelBet = new System.Windows.Forms.Label();
             this.StreetGroupBox.SuspendLayout();
             this.groupBox1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox7)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox6)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox5)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.AnswerGroupBox.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox6)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox7)).BeginInit();
             this.SuspendLayout();
             // 
             // StreetGroupBox
@@ -116,6 +121,44 @@
             this.groupBox1.TabIndex = 2;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Kards";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(58, 116);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(63, 13);
+            this.label2.TabIndex = 8;
+            this.label2.Text = "Your Hands";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(166, 16);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(30, 13);
+            this.label1.TabIndex = 7;
+            this.label1.Text = "table";
+            // 
+            // pictureBox7
+            // 
+            this.pictureBox7.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pictureBox7.Location = new System.Drawing.Point(89, 132);
+            this.pictureBox7.Name = "pictureBox7";
+            this.pictureBox7.Size = new System.Drawing.Size(61, 81);
+            this.pictureBox7.TabIndex = 6;
+            this.pictureBox7.TabStop = false;
+            this.pictureBox7.Click += new System.EventHandler(this.pictureBox7_Click);
+            // 
+            // pictureBox6
+            // 
+            this.pictureBox6.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pictureBox6.Location = new System.Drawing.Point(21, 132);
+            this.pictureBox6.Name = "pictureBox6";
+            this.pictureBox6.Size = new System.Drawing.Size(61, 81);
+            this.pictureBox6.TabIndex = 5;
+            this.pictureBox6.TabStop = false;
+            this.pictureBox6.Click += new System.EventHandler(this.pictureBox6_Click);
             // 
             // pictureBox5
             // 
@@ -191,33 +234,6 @@
             this.AnswerGroupBox.TabStop = false;
             this.AnswerGroupBox.Text = "Answer";
             // 
-            // callPersentLabel
-            // 
-            this.callPersentLabel.AutoSize = true;
-            this.callPersentLabel.Location = new System.Drawing.Point(12, 38);
-            this.callPersentLabel.Name = "callPersentLabel";
-            this.callPersentLabel.Size = new System.Drawing.Size(23, 13);
-            this.callPersentLabel.TabIndex = 0;
-            this.callPersentLabel.Text = "call";
-            // 
-            // foldPersentLabel
-            // 
-            this.foldPersentLabel.AutoSize = true;
-            this.foldPersentLabel.Location = new System.Drawing.Point(120, 38);
-            this.foldPersentLabel.Name = "foldPersentLabel";
-            this.foldPersentLabel.Size = new System.Drawing.Size(24, 13);
-            this.foldPersentLabel.TabIndex = 1;
-            this.foldPersentLabel.Text = "fold";
-            // 
-            // raisePersentLabel
-            // 
-            this.raisePersentLabel.AutoSize = true;
-            this.raisePersentLabel.Location = new System.Drawing.Point(223, 38);
-            this.raisePersentLabel.Name = "raisePersentLabel";
-            this.raisePersentLabel.Size = new System.Drawing.Size(23, 13);
-            this.raisePersentLabel.TabIndex = 2;
-            this.raisePersentLabel.Text = "call";
-            // 
             // GetInfoButton
             // 
             this.GetInfoButton.Location = new System.Drawing.Point(82, 0);
@@ -228,49 +244,86 @@
             this.GetInfoButton.UseVisualStyleBackColor = true;
             this.GetInfoButton.Click += new System.EventHandler(this.GetInfoButton_Click);
             // 
-            // pictureBox6
+            // raisePersentLabel
             // 
-            this.pictureBox6.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pictureBox6.Location = new System.Drawing.Point(21, 132);
-            this.pictureBox6.Name = "pictureBox6";
-            this.pictureBox6.Size = new System.Drawing.Size(61, 81);
-            this.pictureBox6.TabIndex = 5;
-            this.pictureBox6.TabStop = false;
-            this.pictureBox6.Click += new System.EventHandler(this.pictureBox6_Click);
+            this.raisePersentLabel.AutoSize = true;
+            this.raisePersentLabel.Location = new System.Drawing.Point(223, 38);
+            this.raisePersentLabel.Name = "raisePersentLabel";
+            this.raisePersentLabel.Size = new System.Drawing.Size(23, 13);
+            this.raisePersentLabel.TabIndex = 2;
+            this.raisePersentLabel.Text = "call";
             // 
-            // pictureBox7
+            // foldPersentLabel
             // 
-            this.pictureBox7.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pictureBox7.Location = new System.Drawing.Point(89, 132);
-            this.pictureBox7.Name = "pictureBox7";
-            this.pictureBox7.Size = new System.Drawing.Size(61, 81);
-            this.pictureBox7.TabIndex = 6;
-            this.pictureBox7.TabStop = false;
-            this.pictureBox7.Click += new System.EventHandler(this.pictureBox7_Click);
+            this.foldPersentLabel.AutoSize = true;
+            this.foldPersentLabel.Location = new System.Drawing.Point(120, 38);
+            this.foldPersentLabel.Name = "foldPersentLabel";
+            this.foldPersentLabel.Size = new System.Drawing.Size(24, 13);
+            this.foldPersentLabel.TabIndex = 1;
+            this.foldPersentLabel.Text = "fold";
             // 
-            // label1
+            // callPersentLabel
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(166, 16);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(30, 13);
-            this.label1.TabIndex = 7;
-            this.label1.Text = "table";
+            this.callPersentLabel.AutoSize = true;
+            this.callPersentLabel.Location = new System.Drawing.Point(12, 38);
+            this.callPersentLabel.Name = "callPersentLabel";
+            this.callPersentLabel.Size = new System.Drawing.Size(23, 13);
+            this.callPersentLabel.TabIndex = 0;
+            this.callPersentLabel.Text = "call";
             // 
-            // label2
+            // labelBank
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(58, 116);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(63, 13);
-            this.label2.TabIndex = 8;
-            this.label2.Text = "Your Hands";
+            this.labelBank.AutoSize = true;
+            this.labelBank.Location = new System.Drawing.Point(722, 35);
+            this.labelBank.Name = "labelBank";
+            this.labelBank.Size = new System.Drawing.Size(0, 13);
+            this.labelBank.TabIndex = 5;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(644, 59);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(75, 13);
+            this.label3.TabIndex = 6;
+            this.label3.Text = "CurrentStreet: ";
+            // 
+            // labelStreet
+            // 
+            this.labelStreet.AutoSize = true;
+            this.labelStreet.Location = new System.Drawing.Point(718, 59);
+            this.labelStreet.Name = "labelStreet";
+            this.labelStreet.Size = new System.Drawing.Size(43, 13);
+            this.labelStreet.TabIndex = 7;
+            this.labelStreet.Text = "PreFlop";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(644, 83);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(63, 13);
+            this.label4.TabIndex = 8;
+            this.label4.Text = "CurrentBet: ";
+            // 
+            // labelBet
+            // 
+            this.labelBet.AutoSize = true;
+            this.labelBet.Location = new System.Drawing.Point(713, 83);
+            this.labelBet.Name = "labelBet";
+            this.labelBet.Size = new System.Drawing.Size(0, 13);
+            this.labelBet.TabIndex = 9;
             // 
             // SimpleForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(871, 569);
+            this.Controls.Add(this.labelBet);
+            this.Controls.Add(this.label4);
+            this.Controls.Add(this.labelStreet);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.labelBank);
             this.Controls.Add(this.AnswerGroupBox);
             this.Controls.Add(this.CurrentBankLabel);
             this.Controls.Add(this.groupBox1);
@@ -281,6 +334,8 @@
             this.StreetGroupBox.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox7)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox6)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox5)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
@@ -288,8 +343,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.AnswerGroupBox.ResumeLayout(false);
             this.AnswerGroupBox.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox6)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox7)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -316,5 +369,10 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.PictureBox pictureBox7;
         private System.Windows.Forms.PictureBox pictureBox6;
+        private System.Windows.Forms.Label labelBank;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label labelStreet;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label labelBet;
     }
 }

@@ -14,7 +14,7 @@ namespace AI_Poker_Assistance.Models
 
         public double StackPlayer { get; set; }
 
-
+        public EnumOptions LastOption { get; set; }
         /// <summary>
         /// Последня внесённая игроком ставка
         /// </summary>

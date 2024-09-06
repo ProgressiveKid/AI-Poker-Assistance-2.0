@@ -200,6 +200,7 @@
     <Compile Include="Model.cs" />
     <Compile Include="Models\Cards.cs" />
     <Compile Include="Models\Enums\CardsValuecs.cs" />
+    <Compile Include="Models\Enums\EnumOptions.cs" />
     <Compile Include="Models\Enums\EnumPostions.cs" />
     <Compile Include="Models\Enums\StreetsEnum.cs" />
     <Compile Include="Models\GameSession.cs" />
