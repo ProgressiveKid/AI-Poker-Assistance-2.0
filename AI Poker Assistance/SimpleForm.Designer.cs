@@ -213,7 +213,7 @@
             // CurrentBankLabel
             // 
             this.CurrentBankLabel.AutoSize = true;
-            this.CurrentBankLabel.Location = new System.Drawing.Point(644, 34);
+            this.CurrentBankLabel.Location = new System.Drawing.Point(648, 34);
             this.CurrentBankLabel.Name = "CurrentBankLabel";
             this.CurrentBankLabel.Size = new System.Drawing.Size(72, 13);
             this.CurrentBankLabel.TabIndex = 3;
@@ -274,7 +274,7 @@
             // labelBank
             // 
             this.labelBank.AutoSize = true;
-            this.labelBank.Location = new System.Drawing.Point(722, 35);
+            this.labelBank.Location = new System.Drawing.Point(726, 35);
             this.labelBank.Name = "labelBank";
             this.labelBank.Size = new System.Drawing.Size(0, 13);
             this.labelBank.TabIndex = 5;
@@ -282,7 +282,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(644, 59);
+            this.label3.Location = new System.Drawing.Point(648, 59);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(75, 13);
             this.label3.TabIndex = 6;
@@ -291,7 +291,7 @@
             // labelStreet
             // 
             this.labelStreet.AutoSize = true;
-            this.labelStreet.Location = new System.Drawing.Point(718, 59);
+            this.labelStreet.Location = new System.Drawing.Point(722, 59);
             this.labelStreet.Name = "labelStreet";
             this.labelStreet.Size = new System.Drawing.Size(43, 13);
             this.labelStreet.TabIndex = 7;
@@ -300,7 +300,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(644, 83);
+            this.label4.Location = new System.Drawing.Point(648, 83);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(63, 13);
             this.label4.TabIndex = 8;
@@ -309,7 +309,7 @@
             // labelBet
             // 
             this.labelBet.AutoSize = true;
-            this.labelBet.Location = new System.Drawing.Point(713, 83);
+            this.labelBet.Location = new System.Drawing.Point(717, 83);
             this.labelBet.Name = "labelBet";
             this.labelBet.Size = new System.Drawing.Size(0, 13);
             this.labelBet.TabIndex = 9;

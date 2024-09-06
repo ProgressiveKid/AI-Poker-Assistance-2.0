@@ -12,6 +12,7 @@ namespace AI_Poker_Assistance.Models.Enums
       Check,
       Fold,
       Raise,
-      Call
+      Call,
+      AllIn,
     }
 }

@@ -188,6 +188,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Components\NotifyProperty.cs" />
+    <Compile Include="Components\PanelWithCards.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Components\PanelWithcards.Designer.cs">
+      <DependentUpon>PanelWithCards.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Components\UserControl1.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Components\UserControl1.Designer.cs">
+      <DependentUpon>UserControl1.cs</DependentUpon>
+    </Compile>
     <Compile Include="EventHandler.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
@@ -215,6 +228,12 @@
     <Compile Include="SimpleForm.Designer.cs">
       <DependentUpon>SimpleForm.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Components\PanelWithCards.resx">
+      <DependentUpon>PanelWithCards.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Components\UserControl1.resx">
+      <DependentUpon>UserControl1.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>

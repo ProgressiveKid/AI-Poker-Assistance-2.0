@@ -91,7 +91,7 @@ namespace AI_Poker_Assistance
                     pictureBox.Size = new Size(imageWidth, imageHeight);
                     pictureBox.Location = new Point(col * (imageWidth + GAP_SIZE), row * (imageHeight + GAP_SIZE));
                     pictureBox.SizeMode = PictureBoxSizeMode.StretchImage;
-                    pictureBox.ImageLocation = $"{MainDeck.cards[imageIndex].images.png}"; // замените на реальный URL-адрес изображения
+                    pictureBox.ImageLocation = $"{MainDeckM[imageIndex].images.png}"; // замените на реальный URL-адрес изображения
                     galleryPanel.Controls.Add(pictureBox);
                     pictureBox.Click += (sender, e) =>
                     {
@@ -116,7 +116,7 @@ namespace AI_Poker_Assistance
                             var url = $"{card.images.png}";
                             var imageStream = new MemoryStream(webClient.DownloadData(url));
                             var image = Image.FromStream(imageStream);
-                            foreach (var maindeckcard in MainDeck.cards)
+                            foreach (var maindeckcard in MainDeckM)
                             {
                                 if (maindeckcard.code == card.code)
                                 {
@@ -428,10 +428,7 @@ namespace AI_Poker_Assistance
 
         private async void SimpleForm_Load(object sender, EventArgs e)
         {
-            // MakeApiDeck();
-            
-            labelBank.DataBindings.Add("Text", MainGameSession.Bank, "Bank");
-            labelBet.DataBindings.Add("Text", MainGameSession.curMaxBet, "curMaxBet");
+            // MakeApiDeck();           
             MainGameSession = new GameSession() { Bank = 0, Ante = 0.5 , SmallBlind = 1, BigBlaind = 2, curMaxBet = 2 };
             DeckServise deckServise = new DeckServise();
             MainDeckM = await deckServise.CreateDeck();
@@ -463,21 +460,6 @@ namespace AI_Poker_Assistance
                 userControl1.stacklabel.Text = listPlayers[i].StackPlayer.ToString();
                 userControl1.nametexbox.Text = listPlayers[i].NamePlayer;
 
-                //userControl1.nametexbox.TextChanged += (sender, e) =>
-                //{
-                //    int idCurrentPlayer1 = Convert.ToInt32(userControl1.Name.Split(' ')[1]);
-                //    int indexCurrentPlayer1 = 0;
-                //    foreach (var a in playersInGame)
-                //    {
-                //        if (a.IDPlayer == idCurrentPlayer1)
-                //        {
-                //            indexCurrentPlayer1 = playersInGame.IndexOf(a);
-                //        }
-                //    }
-                //    players[indexCurrentPlayer1].Name = userControl1.nametexbox.Text;
-                //}; // Смена имени игрока
-                //players[i].userControl = userControl1;
-
                 if (i == 2)
                 {
                     userControl1.UserActions.Visible = true;
@@ -487,9 +469,6 @@ namespace AI_Poker_Assistance
                 {
                     userControl1.UserActions.Visible = false;
                 }
-
-
-
 
                 userControl1.callbutton.Click += (sender, e) =>
                 {
@@ -506,39 +485,36 @@ namespace AI_Poker_Assistance
                     }
                     else
                     { // если ставка была - то это call
-
-                        
                         if (MainGameSession.curMaxBet > MainPlayers[indexCurrentPlayer].LastBet)
                         { // Были действия от нас раньше
                             double MoneyToCall = MainGameSession.curMaxBet - MainPlayers[indexCurrentPlayer].LastBet;
                             double isThatAllMyMoney = MoneyToCall > MainPlayers[indexCurrentPlayer].StackPlayer ? MainPlayers[indexCurrentPlayer].StackPlayer  : MoneyToCall;
                             MainGameSession.Bank += isThatAllMyMoney;
-                            MainGameSession.curMaxBet = isThatAllMyMoney;
                             MainPlayers[indexCurrentPlayer].StackPlayer -= isThatAllMyMoney;
                             MainPlayers[indexCurrentPlayer].LastOption = EnumOptions.Call;
                             MainPlayers[indexCurrentPlayer].LastBet = MainGameSession.curMaxBet;
                             userControl1.currectbet.Text = isThatAllMyMoney.ToString();
-                            //MakeCall(indexCurrentPlayer, MoneyToCall);
                         }
                         else // Колим впервые
                         {
                             double isThatAllMyMoney = MainGameSession.curMaxBet > MainPlayers[indexCurrentPlayer].StackPlayer ? MainPlayers[indexCurrentPlayer].StackPlayer : MainGameSession.curMaxBet;
-
                             MainGameSession.Bank += isThatAllMyMoney;
-                            MainGameSession.curMaxBet = isThatAllMyMoney;
                             MainPlayers[indexCurrentPlayer].StackPlayer -= isThatAllMyMoney;
                             MainPlayers[indexCurrentPlayer].LastOption = EnumOptions.Call;
                             MainPlayers[indexCurrentPlayer].LastBet = isThatAllMyMoney;
                             userControl1.currectbet.Text = isThatAllMyMoney.ToString();
-                            // MakeBet(indexCurrentPlayer, CurrentBet); // 
                         }
                         if (MainPlayers[indexCurrentPlayer].StackPlayer == 0)
                         {
                             userControl1.currentactionlabel.Text = "ALL-IN";
+                            MainPlayers[indexCurrentPlayer].LastOption = EnumOptions.AllIn;
+                            userControl1.callbutton.Enabled = false;
+                            userControl1.foldbutton.Enabled = false;
+                            userControl1.raisebutton.Enabled = false;
                         }
                         else
                         {
-                            userControl1.currentactionlabel.Text = "CALL";
+                            userControl1.currentactionlabel.Text = "CALL " + MainPlayers[indexCurrentPlayer].LastBet;
                         }
                         userControl1.stacklabel.Text = MainPlayers[indexCurrentPlayer].StackPlayer.ToString();
                         userControl1.UserActions.Visible = false;
@@ -563,11 +539,19 @@ namespace AI_Poker_Assistance
                     int indexNextPlayer = GetNextPlayerOrNextStreet(indexCurrentPlayer);
                     NewAction(indexNextPlayer);
                 };
+                bool isFirstClick = true;
+
                 userControl1.raisebutton.Click += (sender, e) =>
                 {
-                    userControl1.raisesumTextBox.Focus();
-                    userControl1.raisesumTextBox.Visible = true;
-                    userControl1.raisebutton.Click += (senderS,ee)=>
+                    if (isFirstClick)
+                    {
+                        userControl1.raisesumTextBox.Focus();
+                        userControl1.raisesumTextBox.Visible = true;
+                        isFirstClick = false;
+                        userControl1.callbutton.Visible = false;
+                        userControl1.foldbutton.Visible = false;
+                    }
+                    else
                     {
                         int indexCurrentPlayer = userControl1.TabIndex;
                         double curBet = Convert.ToDouble(userControl1.raisesumTextBox.Text);
@@ -580,7 +564,7 @@ namespace AI_Poker_Assistance
                         MainPlayers[indexCurrentPlayer].StackPlayer -= curBet;
                         MainPlayers[indexCurrentPlayer].LastOption = EnumOptions.Raise;
                         MainPlayers[indexCurrentPlayer].LastBet = curBet;
-                        userControl1.currentactionlabel.Text = "RAISE";
+                        userControl1.currentactionlabel.Text = "RAISE" + " " + curBet;
                         userControl1.currectbet.Text = CurrentBet.ToString();
                         userControl1.stacklabel.Text = MainPlayers[indexCurrentPlayer].StackPlayer.ToString();
                         userControl1.UserActions.Visible = false;
@@ -588,14 +572,37 @@ namespace AI_Poker_Assistance
                         userControl1.callbutton.Visible = true;
                         userControl1.foldbutton.Visible = true;
                         userControl1.raisesumTextBox.Visible = false;
-                        userControl1.raisesumTextBox.Clear();
                         labelBank.Text = MainGameSession.Bank.ToString();
+                        labelBet.Text = MainGameSession.curMaxBet.ToString();
                         int indexNextPlayer = GetNextPlayerOrNextStreet(indexCurrentPlayer);
                         NewAction(indexNextPlayer);
+                        isFirstClick = true;
+                    }
+                };
+                userControl1.cardsButton.MouseEnter += (sender, e) =>
+                {
+                    int indexCurrentPlayer = userControl1.TabIndex;
+
+                    PanelWithCards panelWithCards = new PanelWithCards(MainPlayers[indexCurrentPlayer].CardsPlayer[0], MainPlayers[indexCurrentPlayer].CardsPlayer[1], MainPlayers[indexCurrentPlayer].NamePlayer);
+
+                    panelWithCards.Size = new Size(200, 300); // Установите нужные размеры
+                    panelWithCards.Location = new Point(
+                              userControl1.cardsButton.Parent.PointToScreen(userControl1.cardsButton.Location).X - this.Location.X + 50,
+                              userControl1.cardsButton.Parent.PointToScreen(userControl1.cardsButton.Location).Y - this.Location.Y + 50
+                          );
+                    // Добавляем и отображаем панель
+                    Controls.Add(panelWithCards);
+                    panelWithCards.BringToFront(); // Перемещаем панель на передний план
+                    panelWithCards.Show();
+                    userControl1.cardsButton.MouseLeave += (senderr, ee) =>
+                    {
+                        panelWithCards.Hide();
+
                     };
-                    userControl1.callbutton.Visible = false;
-                    userControl1.foldbutton.Visible = false;
-                }; 
+
+                };
+
+                
                 Controls.Add(userControl1);
             }
         } // Загрузка интерфейса 
@@ -622,7 +629,11 @@ namespace AI_Poker_Assistance
 
             bool checkAllCall = MainPlayers.Select(u=>u).Where(u=> u!= null).All(u => u?.LastBet == curLastMaxBet);
             //bool checkAllCheck = MainPlayers.Select(u => u).Where(u => u != null).All(u => u?.LastOption == EnumOptions.Check);
-
+            //if (checkAllCheck)
+            //{ 
+            
+            
+            //}
             if (checkAllCall)
             {
                 // меняем на новую улицу
@@ -661,8 +672,8 @@ namespace AI_Poker_Assistance
             else
             {
                 // идём дальше по ходу 
-                var nextPlayer = MainPlayers.Select(u => u).Where(u => u != null).FirstOrDefault(u => u?.IdPlayer > curIndexPlayer && u?.LastBet <= curLastMaxBet)
-                    ?? MainPlayers.Where(u => u != null).FirstOrDefault(u => u?.IdPlayer >= 0 && u?.LastBet <= curLastMaxBet);
+                var nextPlayer = MainPlayers.Select(u => u).Where(u => u != null).FirstOrDefault(u => u?.IdPlayer > curIndexPlayer && u?.LastBet <= curLastMaxBet && u?.LastOption != EnumOptions.AllIn)
+                    ?? MainPlayers.Where(u => u != null).FirstOrDefault(u => u?.IdPlayer >= 0 && u?.LastBet <= curLastMaxBet && u?.LastOption != EnumOptions.AllIn);
                 // получаем следующего пользователя который должен ходить
                 return nextPlayer.IdPlayer;
             }
